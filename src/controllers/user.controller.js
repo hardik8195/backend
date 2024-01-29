@@ -4,6 +4,16 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+
+const generateRefreshandAcessToken = async(userId){
+    try {
+        const user = await User.findById(userId);
+        const refreshToken = await user.generateRefreshToken();
+        const accessToken = await user.generateAccessToken();
+    } catch (error) {
+        throw new ApiError(500,"something went wrong while generating access token and refresh token")
+    }
+}
 const registerUser = asyncHandler(async (req, res) => {
 
     //get data from frontend:
