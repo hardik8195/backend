@@ -5,11 +5,16 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 
-const generateRefreshandAcessToken = async(userId){
+const generateRefreshandAcessToken = async(userId)=>{
     try {
         const user = await User.findById(userId);
         const refreshToken = await user.generateRefreshToken();
         const accessToken = await user.generateAccessToken();
+
+        user.refreshToken = refreshToken;
+        await user.save({validateBeforeSave:false});
+
+        return {accessToken,refreshToken}
     } catch (error) {
         throw new ApiError(500,"something went wrong while Generating access token and refresh token")
     }
@@ -99,6 +104,9 @@ const loginUser = asyncHandler(async (req,res) => {
 
     if(!userIsValid) throw new ApiError(401,"Password is incorrect")
 
+    const {refreshToken,accessToken}=await generateRefreshandAcessToken(user._id);
+
+    const loggedInUser = await User.findById(user._id).select("-password -refresh")
     
 })
 export { 
