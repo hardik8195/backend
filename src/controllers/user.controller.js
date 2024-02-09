@@ -43,11 +43,11 @@ const registerUser = asyncHandler(async (req, res) => {
     // const coverImageLocalPath = req.files?.coverImage[0]?.path;  //gives an undefined error
     let coverImageLocalPath;
     let avatarLocalPath;
-    if (req.files && Array.isArray(req.files.avatar && req.files.avatar.length > 0)) {
+    if(req.files && Array.isArray(req.files.avatar) && req.files.avatar.length > 0){
         avatarLocalPath = req.files.avatar[0].path;
     }
-    if (req.files && Array.isArray(req.files.coverImage && req.files.coverImage.length > 0)) {
-        coverImageLocalPath = req.files.coverImage[0].path;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path
     }
     
     if (!avatarLocalPath) throw new ApiError(400, "Avatar is required")
@@ -67,7 +67,7 @@ const registerUser = asyncHandler(async (req, res) => {
         password,
         email,
         avatar: avatar.url,
-        coverImage: coverImage?.url || ""
+        coverImage: coverImage?.url||""
     })
 
     //remove password and refreshToken field from response
@@ -106,7 +106,10 @@ const loginUser = asyncHandler(async (req,res) => {
 
     const {refreshToken,accessToken}=await generateRefreshandAcessToken(user._id);
 
-    const loggedInUser = await User.findById(user._id).select("-password -refresh")
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+
+    
+
     
 })
 export { 
