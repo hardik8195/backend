@@ -26,8 +26,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
     //validation check:
-    if (fullName === undefined) throw new ApiError(400, "all fields are required")
-    if (username === undefined) throw new ApiError(400, "all fields are required")
+    if (fullName === undefined) throw new ApiError(400, "All fields are required")
+    if (username === undefined) throw new ApiError(400, "All fields are required")
     if (password === undefined) throw new ApiError(400, "all fields are required")
     if (email === undefined) throw new ApiError(400, "all fields are required")
 
